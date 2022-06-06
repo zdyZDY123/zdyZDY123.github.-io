@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style>
+			table{
+				
+				border:1px solid yellow ;
+				border-collapse:collapse;
+				color: red;
+			}
+			td{
+				padding: 8px 16px;
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<div v-if="books.length">
+	     <table>
+	     	<thead>
+	     		<tr>
+	     			<td></td>
+	     			<td>书籍名称</td>
+	     			<td>出版日期</td>
+	     			<td>价格</td>
+	     			<td>购买数量</td>
+	     			<td>操作</td>
+	     			
+	     		</tr>
+	     	</thead>
+	     	<tbady>
+	     		<tr v-for="(item,index) in books">
+	     			<td>{{item.id}}</td>
+	     			<td>{{item.name}}</td>
+	     			<td>{{item.date}}</td>
+	     			<td>{{item.price}}</td>
+	     			<td>
+	     				<button @click="sub(index)">-</button>
+	     				{{item.counter}}
+	     				<button @click="add(index)">+</button>
+	     			</td>
+	     			<td>
+	     				<button @click='remove(index)'>删除</button>
+	     			</td>
+	     		</tr>
+	     	</tbady>
+	     	<tr>
+	     		<td>
+	     			总共：{{totalprice}}元
+	     		</td>
+	     	</tr>
+	     </table>
+	     
+	     </div>
+	     <h2 v-else>购物车为空</h2>
+	     </div>
+	</body>
+</html>
+<script src="js/vue.js" ></script>
+<script>
+	const app=new Vue({
+		
+		el:'#app',
+		data:{
+			books: [{
+				id: 1,
+				name: '《熊出没》',
+				date: '2006-2',
+				price: 98.00,
+				counter: 1
+			},
+			{
+				id: 2,
+				name: '《喜羊羊与灰太狼》',
+				date: '2006-2',
+				price: 59.00,
+				counter: 1
+			},
+			{
+				id: 3,
+				name: '《海绵宝宝》',
+				date: '2006-2',
+				price: 33.00,
+				counter: 1
+			},
+			{
+				id: 4,
+				name: '《烧包谷》',
+				date: '2006-2',
+				price: 77.00,
+				counter: 1
+			},
+		]
+		},
+		//对于购买书数量的加减
+		methods:{
+			//购买书本数量减少
+				sub(index){
+					//如果书本数量小于等于1，将无法对减号进行操作
+					if(this.books[index].counter<=1){
+						
+					}else{
+						this.books[index].counter--
+					}
+			},
+			//购买书本数量增加
+			add(index){
+				this.books[index].counter++
+			},
+			//删除书本信息
+			remove(index){
+				this.books.splice(index,1)
+			}
+		},
+//对于总价格进行计算并反馈到totalprice
+       computed:{
+       	totalprice(){
+       		let totalprice=0
+       		for(let i=0;i<this.books.length;i++){
+       			totalprice += this.books[i].price*this.books[i].counter
+       		}
+       		return totalprice
+       	}
+       }
+	})
+</script>
